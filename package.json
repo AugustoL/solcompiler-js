@@ -1,0 +1,35 @@
+{
+  "name": "solc-js-dev",
+  "version": "0.0.1",
+  "description": "Use grunt and node.js to watch and compile contracts easily with simple commands.",
+  "scripts": {
+    "start": "node --stack-size=65500 index.js",
+    "build": "node --stack-size=65500 index.js",
+    "dev": "node --stack-size=65500 index.js dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AugustoL/solc-js-dev.git"
+  },
+  "keywords": [
+    "develop",
+    "Ethereum",
+    "smart-contracts",
+    "solidity"
+  ],
+  "author": "Augusto Lemble",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/AugustoL/solc-js-dev/issues"
+  },
+  "homepage": "https://github.com/AugustoL/solc-js-dev#readme",
+  "devDependencies": {
+    "grunt": "~1.0.1",
+    "grunt-contrib-concat": "~1.0.0",
+    "grunt-contrib-watch": "^1.0.0"
+  },
+  "dependencies": {
+    "solc": "^0.3.2-1"
+  }
+}
