@@ -1,15 +1,15 @@
 {
-  "name": "solc-js-dev",
-  "version": "0.0.2",
+  "name": "solcompiler-js",
+  "version": "0.0.3",
   "description": "Use grunt and node.js to watch and compile contracts easily with simple commands.",
   "scripts": {
     "start": "grunt compile",
     "dev": "grunt dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "grunt compile --contractsDir='/test/' --output='/contractsTest.json'"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/AugustoL/solc-js-dev.git"
+    "url": "https://github.com/AugustoL/solcompiler-js.git"
   },
   "keywords": [
     "develop",
@@ -20,9 +20,9 @@
   "author": "Augusto Lemble",
   "license": "GNU",
   "bugs": {
-    "url": "https://github.com/AugustoL/solc-js-dev/issues"
+    "url": "https://github.com/AugustoL/solcompiler-js/issues"
   },
-  "homepage": "https://github.com/AugustoL/solc-js-dev#readme",
+  "homepage": "https://github.com/AugustoL/solcompiler-js#readme",
   "devDependencies": {
     "grunt": "~1.0.1",
     "grunt-contrib-watch": "^1.0.0"

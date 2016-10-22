@@ -5,18 +5,44 @@ var exec = require('child_process').exec;
 
 module.exports = function(grunt) {
 
+    try{
+        var config = require('./config.json');
+    } catch(e){
+        var config = {};
+    }
+    console.log(config);
+    var outputFile = __dirname+'/contracts.json';
+    if (grunt.option("output"))
+        outputFile = __dirname+grunt.option("output");
+    else if (config.output)
+        outputFile = config.output;
+
+    var contractsDir = __dirname+'/contracts/';
+    if (grunt.option("contractsDir"))
+        contractsDir = __dirname+grunt.option("contractsDir");
+    else if (config.contractsDir)
+        contractsDir = config.contractsDir;
+
+    var contracts = fs.readdirSync(contractsDir);
+    for (var i = 0; i < contracts.length; i++)
+        contracts[i] = contractsDir+contracts[i];
+
+    var args = process.argv.slice(2);
+
+    console.log(contracts);
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('compile', 'Compile contracts.', function() {
         if (process.platform == 'linux')
             exec("notify-send 'Compiling contracts..'");
         var done = this.async();
-        var files = fs.readdirSync(__dirname+'/contracts');
         var input = {};
-        async.forEachOf(files, function(file, index, callback){
-            fs.readFile(__dirname+"/contracts/"+file, 'utf8', function read(err, data) {
+        async.forEachOf(contracts, function(file, index, callback){
+            fs.readFile(file, 'utf8', function read(err, data) {
                 if (err)
                     throw err;
+                if (file.indexOf('/') >= 0)
+                    file = file.split('/')[file.split('/').length-1];
                 console.log("Compiling "+file+" ...");
                 input[file] = data.toString();
                 callback(err);
@@ -42,7 +68,7 @@ module.exports = function(grunt) {
                     exec("notify-send '"+output.errors.length+" Compilation error'");
                 done(output.errors[0]);
             } else {
-                fs.writeFile('contracts.json', JSON.stringify(output.contracts, null, '    '), function (err,data) {
+                fs.writeFile(outputFile, JSON.stringify(output.contracts, null, '    '), function (err,data) {
                     if (err) {
                         console.error(err);
                     } else {
@@ -59,11 +85,6 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['compile']);
     grunt.registerTask('dev', ['watch:contracts']);
-
-    var contracts = fs.readdirSync(__dirname+'/contracts');
-
-    for (var i = 0; i < contracts.length; i++)
-        contracts[i] = __dirname+"/contracts/"+contracts[i];
 
     grunt.initConfig({
 
