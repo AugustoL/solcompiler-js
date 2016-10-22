@@ -10,7 +10,7 @@ module.exports = function(grunt) {
     } catch(e){
         var config = {};
     }
-    console.log(config);
+
     var outputFile = __dirname+'/contracts.json';
     if (grunt.option("output"))
         outputFile = __dirname+grunt.option("output");
