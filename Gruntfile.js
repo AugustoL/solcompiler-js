@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 
     var args = process.argv.slice(2);
 
-    console.log(contracts);
+    console.log('Contracts to compile:',contracts);
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('compile', 'Compile contracts.', function() {

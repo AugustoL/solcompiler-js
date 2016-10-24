@@ -2,3 +2,4 @@ node_modules
 contracts.json
 contractsTest.json
 config.json
+contracts/*
