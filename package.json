@@ -1,11 +1,11 @@
 {
   "name": "solcompiler-js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Use grunt and node.js to watch and compile contracts easily with simple commands.",
   "scripts": {
     "start": "grunt compile",
     "dev": "grunt dev",
-    "test": "grunt compile --contractsDir='/test/' --output='/contractsTest.json'"
+    "test": "grunt compile --contractsDir='/test' --output='/contractsTest.json'"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "async": "^2.1.2",
-    "solc": "^0.4.2"
+    "solc": "^0.4.2",
+    "zeppelin-solidity": "0.0.10"
   }
 }

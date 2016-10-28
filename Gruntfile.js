@@ -10,26 +10,35 @@ module.exports = function(grunt) {
     } catch(e){
         var config = {};
     }
-    console.log(config);
+    //console.log('Config: ',config);
+
     var outputFile = __dirname+'/contracts.json';
     if (grunt.option("output"))
         outputFile = __dirname+grunt.option("output");
     else if (config.output)
         outputFile = config.output;
 
-    var contractsDir = __dirname+'/contracts/';
+    var contractsDir = __dirname+'/contracts';
     if (grunt.option("contractsDir"))
         contractsDir = __dirname+grunt.option("contractsDir");
     else if (config.contractsDir)
         contractsDir = config.contractsDir;
 
-    var contracts = fs.readdirSync(contractsDir);
-    for (var i = 0; i < contracts.length; i++)
-        contracts[i] = contractsDir+contracts[i];
+    var readDir = function(dir) {
+        var results = []
+        var list = fs.readdirSync(dir)
+        list.forEach(function(file) {
+            file = dir + '/' + file
+            var stat = fs.statSync(file)
+            if (stat && stat.isDirectory()) results = results.concat(readDir(file))
+            else results.push(file)
+        })
+        return results
+    }
 
-    var args = process.argv.slice(2);
+    var contracts = readDir(contractsDir);
+    //console.log('Contracts: ', contracts);
 
-    console.log(contracts);
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('compile', 'Compile contracts.', function() {
@@ -41,8 +50,8 @@ module.exports = function(grunt) {
             fs.readFile(file, 'utf8', function read(err, data) {
                 if (err)
                     throw err;
-                if (file.indexOf('/') >= 0)
-                    file = file.split('/')[file.split('/').length-1];
+                //if (file.indexOf('/') >= 0)
+                    //file = file.split('/')[file.split('/').length-1];
                 console.log("Compiling "+file+" ...");
                 input[file] = data.toString();
                 callback(err);
@@ -65,7 +74,7 @@ module.exports = function(grunt) {
                 for (var error in output.errors)
                 	console.error(output.errors[0]);
                 if (process.platform == 'linux')
-                    exec("notify-send '"+output.errors.length+" Compilation error'");
+                    exec("notify-send --expire-time=500 -u low '"+output.errors.length+" Compilation error'");
                 done(output.errors[0]);
             } else {
                 fs.writeFile(outputFile, JSON.stringify(output.contracts, null, '    '), function (err,data) {
@@ -73,7 +82,7 @@ module.exports = function(grunt) {
                         console.error(err);
                     } else {
                         if (process.platform == 'linux')
-                            exec("notify-send 'Compilation successfull'");
+                            exec("notify-send --expire-time=500 -u low 'Compilation successfull'");
                         console.log('Contracts file created.');
                         done(err);
                     }
